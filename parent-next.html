@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        body {
+            font-family: Arial,serif;
+            text-align: center;
+        }
+        .input{
+            font-family: Arial,serif;
+            color: #0366ff;
+            width: 200px;
+            height: 100px;
+            font-size: 50px;
+            text-align: center;
+        }
+        .year-digit {
+            width: 50px;
+            height: 60px;
+            font-size: 28px;
+            text-align: center;
+            margin: 5px;
+            border: 2px solid green; /* Matching your black border style */
+            border-radius: 12px;    /* Matching your rounded corners */
+            outline: none;
+            color: #0366ff;
+        }
+
+        /* Styling the # placeholder to be a light gray */
+        .year-digit::placeholder {
+            color: #ccc;
+            font-weight: bold;
+        }
+
+        /* Hides the numeric arrows */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .margin{
+            margin-top: 170px;
+        }
+        <style>
+         .year-container {
+             display: flex;
+             justify-content: center;
+             gap: 10px;
+             margin-top: 20px;
+         }
+
+        .year-digit {
+            width: 50px;
+            height: 70px;
+            font-size: 32px;
+            text-align: center;
+            border: 2px solid green; /* Matching your screenshot */
+            border-radius: 12px;
+            color: #065fd4; /* Matching your blue text color */
+            outline: none;
+        }
+
+        #submitBtn {
+            display: none; /* Stays hidden initially */
+            margin-top: 30px;
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* Removes the up/down arrows */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    </style>
+    <link rel="icon" type="image/x-icon" href="next.ico">
+</head>
+<body>
+<h2 class="margin">Hi parent,</h2>
+<p>Enter the year in which you were born. This is solely for the purpose of verifying your age. It isn't stored.</p>
+<div class="year-container">
+    <input type="number" id="d1" class="year-digit" placeholder="#" oninput="autoJump(this, 'd2')">
+    <input type="number" id="d2" class="year-digit" placeholder="#" oninput="autoJump(this, 'd3')">
+    <input type="number" id="d3" class="year-digit" placeholder="#" oninput="autoJump(this, 'd4')">
+    <input type="number" id="d4" class="year-digit" placeholder="#" oninput="autoJump(this, '')">
+</div>
+
+<button id="submitBtn" onclick="goToLicense()">SUBMIT</button>
+<script>
+    function autoJump(current, nextId) {
+        // Clear non-numeric characters just in case
+        current.value = current.value.replace(/[^0-9]/g, '');
+
+        if (current.value.length >= 1) {
+            current.value = current.value.slice(0, 1);
+            if (nextId) {
+                document.getElementById(nextId).focus();
+            }
+        }
+
+        // This is the line that makes the button appear!
+        checkCompletion();
+    }
+
+    function checkCompletion() {
+        const inputs = document.querySelectorAll('.year-digit');
+        const btn = document.getElementById('submitBtn');
+
+        // Check if every single box has a value
+        const isFull = Array.from(inputs).every(input => input.value.length === 1);
+
+        if (isFull) {
+            btn.style.display = "inline-block";
+        } else {
+            btn.style.display = "none";
+        }
+    }
+
+    function checkFull() {
+        const d1 = document.getElementById('d1').value;
+        const d2 = document.getElementById('d2').value;
+        const d3 = document.getElementById('d3').value;
+        const d4 = document.getElementById('d4').value;
+        const btn = document.getElementById('nextBtn');
+
+        // If all 4 boxes have a value, show the button
+        if (d1 && d2 && d3 && d4) {
+            btn.style.display = "inline-block";
+        } else {
+            btn.style.display = "none";
+        }
+    }
+
+    function redirectToLicense() {
+        window.location.href = "license-text.html";
+    }
+    function goToLicense() {
+        console.log("Redirecting..."); // This helps you see if the button is even working
+        window.location.assign("license-text.html");
+    }
+
+    // Backspace logic to move cursor back
+    // Add this to your script to block 'e', '+', and '-'
+    document.querySelectorAll('.year-digit').forEach(input => {
+        input.addEventListener('keydown', function(e) {
+            // Block e, +, -, and .
+            if (['e', 'E', '+', '-', '.'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+</body>
+</html>
